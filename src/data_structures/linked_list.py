@@ -1,36 +1,57 @@
-"""Linked List module"""
+"""Linked List module."""
+
+# --
+
+from typing import Generic, Iterator, Optional, TypeVar
+
+# --
+
+T = TypeVar("T")
+
+# --
 
 
-class Node:
+class Node(Generic[T]):
     """Class Node for data object"""
 
-    def __init__(self, value):
-        self.value = value
-        self.next = None
-        self.prev = None
+    def __init__(self, value: T) -> None:
+        self.value: T = value
+        self.next: Optional[Node[T]] = None
 
 
-class SinglyLinkedList:
-    """Single linked-list class"""
+class SinglyLinkedList(Generic[T]):
+    """Single linked-list class."""
 
-    def __init__(self):
-        self.head = None
-        self.tail = None
-        self.size = 0
+    def __init__(self) -> None:
+        self.head: Optional[Node[T]] = None
+        self.tail: Optional[Node[T]] = None
+        self.size: int = 0
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.size
 
-    def push(self, value):
-        new_node = Node(value)
+    def __iter__(self) -> Iterator[T]:
         current = self.head
+        while current:
+            yield current.value
+            current = current.next
+
+    def __repr__(self) -> str:
+        return " -> ".join(str(v) for v in self) + " -> None"
+
+    def push(self, value: T) -> None:
+        """Adds a value to the top of the list."""
+
+        new_node = Node(value)
+        new_node.next = self.head
         self.head = new_node
-        self.head.next = current
         if self.tail is None:
             self.tail = new_node
         self.size += 1
 
-    def append(self, value):
+    def append(self, value: T) -> None:
+        """Adds a value to the back of the list."""
+
         new_node = Node(value)
         if not self.head:
             self.head = new_node
@@ -42,7 +63,9 @@ class SinglyLinkedList:
         self.tail = new_node
         self.size += 1
 
-    def shift(self):
+    def shift(self) -> Optional[T]:
+        """Deletes the value from the top of the list and returns it."""
+
         current = self.head
         if current:
             self.head = self.head.next
@@ -51,7 +74,10 @@ class SinglyLinkedList:
             self.size -= 1
             return current.value
 
-    def pop(self):
+        return None
+
+    def pop(self) -> Optional[T]:
+        """Deletes the value from the back of the list and returns it."""
 
         if not self.head:
             return None
@@ -64,7 +90,7 @@ class SinglyLinkedList:
             return value
 
         current = self.head
-        while current != self.tail:
+        while current.next != self.tail:
             current = current.next
 
         value = self.tail.value
@@ -73,39 +99,43 @@ class SinglyLinkedList:
         self.size -= 1
         return value
 
-    def find(self, value):
-        pass
-
-    def index(self, idx):
-        pass
-
-    def insert(self, value, idx):
-        new_node = Node(value)
-
-        if idx == 0:
-            new_node.next = self.head
-            self.head = new_node
-            if not self.tail:
-                self.tail = new_node
-            return
+    def find(self, value: T) -> bool:
+        """Searches for a value in the list."""
 
         current = self.head
-        current_idx = 0
-        prev = 0
-
-        while current and current_idx < idx:
-            prev = current
+        while current:
+            if current.value == value:
+                return True
             current = current.next
-            current_idx += 1
+        return False
 
-        if current_idx == idx:
-            prev.next = new_node
-            new_node.next = current
-            self.size += 1
-        else:
+    def insert(self, value: T, idx: int) -> None:
+        """Insert the value into the list at the specified index."""
+
+        if idx < 0 or idx > len(self):
             raise IndexError("Index out of range")
 
-    def erase(self, value):
+        if idx == 0:
+            self.push(value)
+            return
+
+        if len(self) == idx:
+            self.append(value)
+            return
+
+        new_node = Node(value)
+        current = self.head
+
+        for _ in range(idx - 1):
+            current = current.next
+
+        new_node.next = current.next
+        current.next = new_node
+        self.size += 1
+
+    def erase(self, value: T) -> bool:
+        """Deletes a value from the list if it exists."""
+
         current = self.head
         prev = None
 
@@ -120,14 +150,10 @@ class SinglyLinkedList:
                     if prev.next is None:
                         self.tail = prev
 
+                self.size -= 1
                 return True
 
             prev = current
             current = current.next
 
-    def display(self):
-        current = self.head
-        while current:
-            print(current.value, end=" -> ")
-            current = current.next
-        print("Finish")
+        return False
