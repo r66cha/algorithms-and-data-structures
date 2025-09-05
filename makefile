@@ -5,7 +5,7 @@ install:
 	uv pip install -r requirements.txt
 
 run:
-	uv run poligon.py
+	uv run main.py
 
 
 test:

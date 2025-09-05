@@ -48,7 +48,7 @@ class SortMethods:
 
     # --
 
-    def _merge_list(self, a, b):
+    def _merge_list(self, a, b) -> list:
         c = []
         N = len(a)
         M = len(b)
@@ -66,7 +66,7 @@ class SortMethods:
         c += a[i:] + b[j:]
         return c
 
-    def split_and_merge_list(self, a):
+    def split_and_merge_list(self, a) -> list:
         N1 = len(a) // 2
         a1 = a[:N1]
         a2 = a[N1:]
@@ -78,10 +78,23 @@ class SortMethods:
 
         return self._merge_list(a1, a2)
 
+    # --
+
+    def quick_sort(self, lst: list) -> list:
+        import random
+
+        if len(lst) > 1:
+            x = lst[random.randint(0, len(lst) - 1)]
+            low = [n for n in lst if n < x]
+            eq = [n for n in lst if n == x]
+            hight = [n for n in lst if n > x]
+            lst = self.quick_sort(low) + eq + self.quick_sort(hight)
+
+        return lst
+
 
 s = SortMethods()
 
 n = [-3, 5, 0, -8, 1, 10]
 
-print(s.bubble_sort(n))
-print([1] + [])
+print(s.quick_sort(n))

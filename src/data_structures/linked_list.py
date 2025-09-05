@@ -18,43 +18,7 @@ class Node(Generic[T]):
 
 
 class SinglyLinkedList(Generic[T]):
-    """Single linked-list class.
-
-    Methods:
-        __init__() -> None
-            - Initializes an empty linked list.
-
-        __len__() -> int
-            - Returns the number of elements in the list.
-
-        __iter__() -> Iterator[T]
-            - Iterates over the values in the list.
-
-        __repr__() -> str
-            - Returns a string representation of the list.
-
-        push(value) -> None
-            - Adds a value to the front of the list.
-
-        append(value) -> None
-            - Adds a value to the end of the list.
-
-        shift() -> Optional[T]
-            - Removes and returns the first element of the list.
-
-        pop() -> Optional[T]
-            - Removes and returns the last element of the list.
-
-        find(value) -> bool
-            - Checks if a value exists in the list.
-
-        insert(value, idx) -> None
-            - Inserts a value at the specified index.
-
-        erase(value) -> bool
-            - Removes the first occurrence of a value from the list.
-
-    """
+    """Single linked-list class."""
 
     def __init__(self) -> None:
         self.head: Optional[Node[T]] = None
