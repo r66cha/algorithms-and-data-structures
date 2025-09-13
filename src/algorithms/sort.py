@@ -1,4 +1,4 @@
-class SortMethods:
+class SortAlgorithms:
 
     # --
 
@@ -9,14 +9,12 @@ class SortMethods:
             m = lst[i]  # min value
             p = i  # index min value
             for j in range(i + 1, N):  # search min
-                if m > lst[j]:
+                if lst[j] < m:
                     m = lst[j]
                     p = j
 
-            if p != i:
-                t = lst[i]
-                lst[i] = lst[p]
-                lst[p] = t
+            if p != i:  # Если индекс минимального числа изменился
+                lst[i], lst[p] = lst[p], lst[i]  # Меняем местами значения
 
         return lst
 
@@ -39,8 +37,8 @@ class SortMethods:
     def bubble_sort(self, lst: list) -> list:
         N = len(lst)
 
-        for i in range(0, N - 1):
-            for j in range(0, N - 1 - i):
+        for i in range(N - 1):
+            for j in range(N - 1 - i):
                 if lst[j] > lst[j + 1]:
                     lst[j], lst[j + 1] = lst[j + 1], lst[j]
 
@@ -50,12 +48,12 @@ class SortMethods:
 
     def _merge_list(self, a, b) -> list:
         c = []
-        N = len(a)
-        M = len(b)
+        A = len(a)
+        B = len(b)
 
         i = 0
         j = 0
-        while i < N and j < M:
+        while i < A and j < B:
             if a[i] <= b[j]:
                 c.append(a[i])
                 i += 1
@@ -67,9 +65,9 @@ class SortMethods:
         return c
 
     def split_and_merge_list(self, a) -> list:
-        N1 = len(a) // 2
-        a1 = a[:N1]
-        a2 = a[N1:]
+        mid = len(a) // 2
+        a1 = a[:mid]
+        a2 = a[mid:]
 
         if len(a1) > 1:
             a1 = self.split_and_merge_list(a1)
@@ -93,8 +91,8 @@ class SortMethods:
         return lst
 
 
-s = SortMethods()
+s = SortAlgorithms()
 
 n = [-3, 5, 0, -8, 1, 10]
 
-print(s.quick_sort(n))
+print(s.bubble_sort(n))

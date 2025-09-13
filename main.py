@@ -1,32 +1,28 @@
-import time
-import asyncio
+l = [
+    ["*", 0],
+    [0, "*"],
+    [0, 0],
+]
+directions = [
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    # --
+    (0, -1),
+    (0, 1),
+    # --
+    (1, -1),
+    (1, 0),
+    (1, 1),
+]
 
 
-async def foo(n: int):
-    print(f"Task {n} start")
+counter = 0
 
-    await asyncio.sleep(3)
-
-    print(f"Task {n} stop")
-
-
-async def tasker():
-    task1 = asyncio.create_task(foo(n=1))
-    task2 = asyncio.create_task(foo(n=2))
-
-    await task1
-    print("Что то сделал")
-    await task2
-
-
-async def awaiter():
-    await foo(n=1)
-    print("Что то сделал")
-    await foo(n=2)
-
-
-if __name__ == "__main__":
-    start = time.perf_counter()
-    asyncio.run(tasker())
-    duration = time.perf_counter() - start
-    print(f"Time: {duration}")
+for r in range(len(l)):
+    for c in range(len(l[0])):
+        if l[r][c] == "*":
+            continue
+        counter = 0
+        for dr, dc in directions:
+            ...
